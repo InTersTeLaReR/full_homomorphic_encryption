@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^4.5.1"
+  }
+}
