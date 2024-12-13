@@ -22,13 +22,33 @@ if "wallet" not in st.session_state:
 if "last_passkey_change_time" not in st.session_state:
     st.session_state.last_passkey_change_time = time.time()
 
-# Encryption and decryption functions
+if "encryption_method" not in st.session_state:
+    st.session_state.encryption_method = "HE"  # Default to Homomorphic Encryption (HE)
+
+# Encryption and decryption functions for HE (Paillier)
 def encrypt_data(data):
-    encrypted_data = st.session_state.public_key.encrypt(float(data))
+    if st.session_state.encryption_method == "HE":
+        encrypted_data = st.session_state.public_key.encrypt(float(data))
+    elif st.session_state.encryption_method == "FFHE":
+        # Use FHE encryption function (this is a placeholder)
+        encrypted_data = encrypt_data_fhe(data)  # Replace with actual FHE encryption function
     return encrypted_data
 
 def decrypt_data(encrypted_data):
-    return st.session_state.private_key.decrypt(encrypted_data)
+    if st.session_state.encryption_method == "HE":
+        return st.session_state.private_key.decrypt(encrypted_data)
+    elif st.session_state.encryption_method == "FFHE":
+        # Use FHE decryption function (this is a placeholder)
+        return decrypt_data_fhe(encrypted_data)  # Replace with actual FHE decryption function
+
+# Placeholder FHE encryption and decryption (replace with actual FHE library functions)
+def encrypt_data_fhe(data):
+    # FHE encryption logic should go here
+    return data  # Placeholder, replace with actual FHE encryption
+
+def decrypt_data_fhe(encrypted_data):
+    # FHE decryption logic should go here
+    return encrypted_data  # Placeholder, replace with actual FHE decryption
 
 def get_current_passkey():
     elapsed_time = time.time() - st.session_state.last_passkey_change_time
@@ -164,7 +184,6 @@ elif nav_section == "FAQ's":
     4. **How is my data protected?**
        - Your data is encrypted using Paillier homomorphic encryption, ensuring its confidentiality and security.
     """)
-
 elif nav_section == "Support":
     st.header("Support")
     st.write("For assistance with the platform, please contact us at the following:")
@@ -179,6 +198,16 @@ elif nav_section == "Bank & Mandates":
 elif nav_section == "Settings":
     st.header("Settings")
     st.write("Here, you can manage your account settings.")
+
+    # Toggle to switch between encryption methods
+    encryption_method = st.radio(
+        "Select Encryption Method",
+        options=["HE", "FFHE"],
+        index=0 if st.session_state.encryption_method == "HE" else 1
+    )
+    if encryption_method != st.session_state.encryption_method:
+        st.session_state.encryption_method = encryption_method
+        st.success(f"Switched to {encryption_method} encryption method.")
 
 elif nav_section == "Graph Chart":
     st.header("Transaction Chart")
