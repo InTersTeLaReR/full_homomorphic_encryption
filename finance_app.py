@@ -40,11 +40,11 @@ def display_countdown():
     else:
         st.write("Passkey has been updated!")
 
-# Sidebar Navigation with Cards
+# Sidebar Navigation with Equal Card Sizes
 st.sidebar.title("Navigation")
 
-# Create columns for the cards
-card_columns = st.sidebar.columns(2)
+# Create columns with equal width for each button
+card_columns = st.sidebar.columns(3)  # You can adjust the number to match your sections
 
 # Define the sections as cards
 card_section = None
@@ -54,22 +54,22 @@ with card_columns[0]:
 with card_columns[1]:
     if st.button("FAQ's", use_container_width=True):
         card_section = "FAQ's"
-with card_columns[0]:
+with card_columns[2]:
     if st.button("Support", use_container_width=True):
         card_section = "Support"
-with card_columns[1]:
+with card_columns[0]:
     if st.button("Bank & Mandates", use_container_width=True):
         card_section = "Bank & Mandates"
-with card_columns[0]:
+with card_columns[1]:
     if st.button("Settings", use_container_width=True):
         card_section = "Settings"
-with card_columns[1]:
+with card_columns[2]:
     if st.button("Logout", use_container_width=True):
         card_section = "Logout"
 
 # Home Section
 if card_section == "Home":
-    st.title("PrivShare – आपके डेटा की सुरक्षा, आपकी पहचान की रक्षा")
+    st.title("Secure Financial Data Platform")
     st.write("Welcome to the platform where you can securely submit and manage your financial data.")
 
     # Dropdown for user/admin sections
