@@ -40,44 +40,47 @@ def display_countdown():
     else:
         st.write("Passkey has been updated!")
 
-# Sidebar Navigation with Equal Card Sizes
-st.sidebar.title("Navigation")
+# Main Interface
+st.title("Secure Financial Data Platform")
+st.write("Welcome to the platform where you can securely submit and manage your financial data.")
 
-# Create columns with equal width for each button
-card_columns = st.sidebar.columns(3)  # You can adjust the number to match your sections
+# Default navigation section
+if "nav_section" not in st.session_state:
+    st.session_state.nav_section = "Home"
 
-# Define the sections as cards
-card_section = None
-with card_columns[0]:
-    if st.button("Home", use_container_width=True):
-        card_section = "Home"
-with card_columns[1]:
-    if st.button("FAQ's", use_container_width=True):
-        card_section = "FAQ's"
-with card_columns[2]:
-    if st.button("Support", use_container_width=True):
-        card_section = "Support"
-with card_columns[0]:
-    if st.button("Bank & Mandates", use_container_width=True):
-        card_section = "Bank & Mandates"
-with card_columns[1]:
-    if st.button("Settings", use_container_width=True):
-        card_section = "Settings"
-with card_columns[2]:
-    if st.button("Logout", use_container_width=True):
-        card_section = "Logout"
+# Sidebar Navigation Buttons
+st.sidebar.header("Navigation")
+def navigate_to(section):
+    st.session_state.nav_section = section
 
-# Home Section
-if card_section == "Home":
-    st.title("Secure Financial Data Platform")
-    st.write("Welcome to the platform where you can securely submit and manage your financial data.")
+def handle_navigation():
+    st.session_state.nav_section = st.session_state.temp_nav
+
+nav_buttons = {
+    "Home": "Home",
+    "FAQ's": "FAQ's",
+    "Support": "Support",
+    "Bank & Mandates": "Bank & Mandates",
+    "Settings": "Settings",
+    "Logout": "Logout",
+}
+
+for label, section in nav_buttons.items():
+    if st.sidebar.button(label):
+        navigate_to(section)
+
+# Navigation Logic
+nav_section = st.session_state.nav_section
+
+if nav_section == "Home":
+    st.header("Home")
 
     # Dropdown for user/admin sections
     section = st.selectbox("Select Section", ["User Section", "Admin Section"])
 
     # User Section
     if section == "User Section":
-        st.header("Submit Financial Data")
+        st.subheader("Submit Financial Data")
 
         # User inputs financial data
         user_id = st.text_input("Enter User ID:")
@@ -103,7 +106,7 @@ if card_section == "Home":
 
     # Admin Section
     elif section == "Admin Section":
-        st.header("Admin Panel")
+        st.subheader("Admin Panel")
 
         # Admin authentication
         admin_password = st.text_input("Enter Admin Access Code:", type="password")
@@ -124,10 +127,9 @@ if card_section == "Home":
             else:
                 st.error("Incorrect access code! Access denied.")
 
-# FAQ Section
-elif card_section == "FAQ's":
-    st.title("Frequently Asked Questions")
-    st.write(""" 
+elif nav_section == "FAQ's":
+    st.header("Frequently Asked Questions")
+    st.write("""
     1. **How do I submit my financial data?**
        - You can securely submit your financial data through the "User Section" of the platform.
     2. **What is encryption?**
@@ -138,32 +140,27 @@ elif card_section == "FAQ's":
        - Your data is encrypted using Paillier homomorphic encryption, ensuring its confidentiality and security.
     """)
 
-# Support Section
-elif card_section == "Support":
-    st.title("Support")
+elif nav_section == "Support":
+    st.header("Support")
     st.write("For assistance with the platform, please contact us at the following:")
     st.write("Email: support@secureplatform.com")
     st.write("Phone: +1-234-567-890")
     st.write("Our team is available 24/7 to assist you.")
 
-# Bank & Mandates Section
-elif card_section == "Bank & Mandates":
-    st.title("Bank & Mandates")
+elif nav_section == "Bank & Mandates":
+    st.header("Bank & Mandates")
     st.write("This section provides access to bank mandates and transactions related to financial institutions.")
     st.write("Here, you can link your bank account, manage mandates, and view related activities.")
 
-# Settings Section
-elif card_section == "Settings":
-    st.title("Settings")
+elif nav_section == "Settings":
+    st.header("Settings")
     st.write("Here, you can manage your account settings.")
     st.write("Options include changing your password, updating your profile, and configuring notification preferences.")
 
-# Logout Section
-elif card_section == "Logout":
-    st.title("Logout")
+elif nav_section == "Logout":
+    st.header("Logout")
     st.write("You have successfully logged out. To log in again, return to the Home section.")
 
 # Optional: Display encrypted data storage for demonstration
 st.sidebar.header("Encrypted Data Overview")
-# Convert encrypted data to a string for JSON display
 st.sidebar.json({user: {"ciphertext": str(data.ciphertext()), "exponent": data.exponent} for user, data in st.session_state.encrypted_transactions.items()})
