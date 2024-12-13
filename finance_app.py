@@ -76,6 +76,7 @@ if nav_section == "Home":
 
         # User input fields
         user_id = st.text_input("Enter User ID:")
+        pan_no = st.text_input("Enter PAN Number:")  # PAN Number input field
         transaction_amount = st.text_input("Enter Transaction Amount (numeric):")
 
         # Display passkey and countdown
@@ -85,13 +86,14 @@ if nav_section == "Home":
 
         # Handle data submission
         if st.button("Encrypt and Submit"):
-            if user_id and transaction_amount.replace('.', '', 1).isdigit() and passkey == current_passkey:
+            if user_id and pan_no and transaction_amount.replace('.', '', 1).isdigit() and passkey == current_passkey:
                 encrypted_data = encrypt_data(transaction_amount)
                 # Store encrypted transaction
                 st.session_state.encrypted_transactions[user_id] = encrypted_data
                 # Save transaction history
                 st.session_state.transaction_history.append({
                     "user_id": user_id,
+                    "pan_no": pan_no,  # Include PAN number in transaction history
                     "transaction_amount": transaction_amount,
                     "status": "Encrypted and stored securely"
                 })
@@ -105,7 +107,7 @@ if nav_section == "Home":
         st.subheader("Transaction History")
         if st.session_state.transaction_history:
             for idx, transaction in enumerate(st.session_state.transaction_history, 1):
-                st.write(f"{idx}. User ID: {transaction['user_id']}, Amount: {transaction['transaction_amount']}, Status: {transaction['status']}")
+                st.write(f"{idx}. User ID: {transaction['user_id']}, PAN No: {transaction['pan_no']}, Amount: {transaction['transaction_amount']}, Status: {transaction['status']}")
         else:
             st.write("No transactions submitted yet.")
 
