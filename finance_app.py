@@ -69,7 +69,7 @@ with card_columns[1]:
 
 # Home Section
 if card_section == "Home":
-    st.title("Secure Financial Data Platform")
+    st.title("PrivShare – आपके डेटा की सुरक्षा, आपकी पहचान की रक्षा")
     st.write("Welcome to the platform where you can securely submit and manage your financial data.")
 
     # Dropdown for user/admin sections
