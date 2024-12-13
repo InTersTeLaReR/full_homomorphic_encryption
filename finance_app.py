@@ -287,6 +287,10 @@ elif nav_section == "Spending Analysis":
         ax.set_title('Spending Distribution Over Time')
         st.pyplot(fig)
 
+        # Display detailed transaction data in a table
+        st.write("### Detailed Spending Table")
+        st.table(st.session_state.wallet)
+
     else:
         st.write("No spending data available.")
 
@@ -310,10 +314,3 @@ if "logout_time" not in st.session_state:
 
 # Calculate remaining time
 elapsed_time = time.time() - st.session_state.logout_time + 300
-remaining_time = max(0, int(elapsed_time))
-
-# Display countdown
-st.write(f"Time until automatic logout: {remaining_time} seconds")
-
-if remaining_time == 0:
-    st.session_state.nav_section = "Logout"  # Automatically log out when the timer ends
