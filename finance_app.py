@@ -154,21 +154,55 @@ elif nav_section == "Support":
         st.session_state.messages = []
 
     def get_bot_reply(user_input):
+        # Define responses
         replies = {
             "hi": "Hello! How can I assist you today?",
             "help": "Please describe the issue you're facing, and I'll do my best to help.",
-            "transaction": "You can submit your financial data in the User Section under the 'Submit Financial Data' tab.",
-            "encryption": "Encryption ensures that your data is securely stored and transmitted, preventing unauthorized access.",
-            "admin": "To access the Admin Panel, enter the admin access code in the Admin Section."
+            "investment": "Here is some information about investments: You can diversify your portfolio through stocks, bonds, and mutual funds.",
+            "holdings": "Your holdings refer to the assets you own, such as stocks, bonds, or real estate investments.",
+            "sport": "Sports news includes the latest updates on football, basketball, and other events happening globally.",
+            "news": "Stay updated with the latest world news covering politics, business, and more.",
+            "crypto": "Cryptocurrency involves digital currencies such as Bitcoin, Ethereum, and others that use blockchain technology."
         }
         return replies.get(user_input.lower(), "Sorry, I didn't understand that. Please try again.")
 
-    # User input for chat
+    # Initial chatbot flow
+    if "step" not in st.session_state:
+        st.session_state.step = 0  # Step 0: Start
+    # Get user input for chatbot
     user_input = st.text_input("Your Message:", "")
+
     if user_input:
         st.session_state.messages.append(f"You: {user_input}")
-        bot_reply = get_bot_reply(user_input)
-        st.session_state.messages.append(f"Bot: {bot_reply}")
+        if st.session_state.step == 0:
+            if user_input.lower() == "hi":
+                bot_reply = get_bot_reply("hi")
+                st.session_state.step = 1  # Move to next step
+                st.session_state.messages.append(f"Bot: {bot_reply}")
+            else:
+                bot_reply = "Please say 'hi' to start the conversation."
+                st.session_state.messages.append(f"Bot: {bot_reply}")
+        elif st.session_state.step == 1:
+            if user_input.lower() == "investment":
+                bot_reply = get_bot_reply("investment")
+                st.session_state.step = 2  # Next step
+            elif user_input.lower() == "holdings":
+                bot_reply = get_bot_reply("holdings")
+                st.session_state.step = 2  # Next step
+            else:
+                bot_reply = "Please choose between 'Investment' or 'Holdings'."
+            st.session_state.messages.append(f"Bot: {bot_reply}")
+        elif st.session_state.step == 2:
+            if user_input.lower() == "sport":
+                bot_reply = get_bot_reply("sport")
+            elif user_input.lower() == "news":
+                bot_reply = get_bot_reply("news")
+            elif user_input.lower() == "crypto":
+                bot_reply = get_bot_reply("crypto")
+            else:
+                bot_reply = "Please select between 'Sport', 'News', or 'Crypto'."
+            st.session_state.messages.append(f"Bot: {bot_reply}")
+            st.session_state.step = 0  # Reset after response
 
     # Display conversation
     for message in st.session_state.messages:
