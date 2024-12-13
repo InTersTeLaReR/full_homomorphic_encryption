@@ -239,13 +239,25 @@ elif nav_section == "FAQ's":
     4. **How is my data protected?**
        - Your data is encrypted using Paillier homomorphic encryption, ensuring its confidentiality and security.
     """)
-    
 elif nav_section == "Support":
     st.header("Support")
     st.write("For assistance with the platform, please contact us at the following:")
     st.write("Email: support@secureplatform.com")
     st.write("Phone: +1-234-567-890")
     st.write("Our team is available 24/7 to assist you.")
+
+    # Use a radio button to select an option
+    user_input = st.radio("Choose a topic:", ("Investment", "Deposition"))
+
+    if user_input == "Investment":
+        st.write("""
+        **Investment** involves allocating money into financial instruments with the expectation of generating returns over time. Common investment options include stocks, bonds, real estate, and mutual funds. By investing, individuals aim to grow their wealth, achieve financial goals, and beat inflation. It's important to diversify investments and understand the associated risks. A well-planned investment strategy can help achieve long-term financial stability.
+        """)
+
+    elif user_input == "Deposition":
+        st.write("""
+        **Deposition** refers to the act of placing or depositing money into a secure account, such as a bank account or savings account. It allows individuals to safeguard their funds and earn interest over time. Depositing money is a safe way to preserve capital while earning a small return through interest. Deposits are generally low-risk investments, offering liquidity and security for the depositor's funds.
+        """)
 
 elif nav_section == "Settings":
     st.header("Settings")
