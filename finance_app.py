@@ -40,12 +40,35 @@ def display_countdown():
     else:
         st.write("Passkey has been updated!")
 
-# Sidebar Navigation
+# Sidebar Navigation with Cards
 st.sidebar.title("Navigation")
-nav_section = st.sidebar.radio("Go to:", ["Home", "FAQ's", "Support", "Bank & Mandates", "Settings", "Logout"])
+
+# Create columns for the cards
+card_columns = st.sidebar.columns(2)
+
+# Define the sections as cards
+card_section = None
+with card_columns[0]:
+    if st.button("Home", use_container_width=True):
+        card_section = "Home"
+with card_columns[1]:
+    if st.button("FAQ's", use_container_width=True):
+        card_section = "FAQ's"
+with card_columns[0]:
+    if st.button("Support", use_container_width=True):
+        card_section = "Support"
+with card_columns[1]:
+    if st.button("Bank & Mandates", use_container_width=True):
+        card_section = "Bank & Mandates"
+with card_columns[0]:
+    if st.button("Settings", use_container_width=True):
+        card_section = "Settings"
+with card_columns[1]:
+    if st.button("Logout", use_container_width=True):
+        card_section = "Logout"
 
 # Home Section
-if nav_section == "Home":
+if card_section == "Home":
     st.title("Secure Financial Data Platform")
     st.write("Welcome to the platform where you can securely submit and manage your financial data.")
 
@@ -102,9 +125,9 @@ if nav_section == "Home":
                 st.error("Incorrect access code! Access denied.")
 
 # FAQ Section
-elif nav_section == "FAQ's":
+elif card_section == "FAQ's":
     st.title("Frequently Asked Questions")
-    st.write("""
+    st.write(""" 
     1. **How do I submit my financial data?**
        - You can securely submit your financial data through the "User Section" of the platform.
     2. **What is encryption?**
@@ -116,7 +139,7 @@ elif nav_section == "FAQ's":
     """)
 
 # Support Section
-elif nav_section == "Support":
+elif card_section == "Support":
     st.title("Support")
     st.write("For assistance with the platform, please contact us at the following:")
     st.write("Email: support@secureplatform.com")
@@ -124,22 +147,22 @@ elif nav_section == "Support":
     st.write("Our team is available 24/7 to assist you.")
 
 # Bank & Mandates Section
-elif nav_section == "Bank & Mandates":
+elif card_section == "Bank & Mandates":
     st.title("Bank & Mandates")
     st.write("This section provides access to bank mandates and transactions related to financial institutions.")
     st.write("Here, you can link your bank account, manage mandates, and view related activities.")
 
 # Settings Section
-elif nav_section == "Settings":
+elif card_section == "Settings":
     st.title("Settings")
     st.write("Here, you can manage your account settings.")
     st.write("Options include changing your password, updating your profile, and configuring notification preferences.")
 
 # Logout Section
-elif nav_section == "Logout":
+elif card_section == "Logout":
     st.title("Logout")
     st.write("You have successfully logged out. To log in again, return to the Home section.")
-    
+
 # Optional: Display encrypted data storage for demonstration
 st.sidebar.header("Encrypted Data Overview")
 # Convert encrypted data to a string for JSON display
