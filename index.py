@@ -1,4 +1,3 @@
-#for sit hackathon by team codesmith
 import random
 import smtplib
 from email.message import EmailMessage
@@ -9,9 +8,9 @@ otp = ""
 for i in range(6):
     otp += str(random.randint(0, 9))
 
-#i have removed my password and email so make sure to add urs in this place- by team codesmith
-from_mail = 'email@gmail.com' 
-password = 'passwaord' 
+
+from_mail = 'furydark13@gmail.com' 
+password = 'cnew coxg jtzx setl' 
 
 try:
 
