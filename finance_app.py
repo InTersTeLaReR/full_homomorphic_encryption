@@ -81,9 +81,10 @@ nav_buttons = {
     "Home": "Home",
     "FAQ's": "FAQ's",
     "Support": "Support",
-    "Bank & Mandates": "Bank & Mandates",
     "Settings": "Settings",
     "Graph Chart": "Graph Chart",
+    "Spending Analysis": "Spending Analysis",  # Added Spending Analysis
+    "Encrypted Data": "Encrypted Data",  # Added Encrypted Data
     "Wallet": "Wallet",  # Wallet added
     "Logout": "Logout",
 }
@@ -191,10 +192,6 @@ elif nav_section == "Support":
     st.write("Phone: +1-234-567-890")
     st.write("Our team is available 24/7 to assist you.")
 
-elif nav_section == "Bank & Mandates":
-    st.header("Bank & Mandates")
-    st.write("This section provides access to bank mandates and transactions related to financial institutions.")
-
 elif nav_section == "Settings":
     st.header("Settings")
     st.write("Here, you can manage your account settings.")
@@ -226,17 +223,26 @@ elif nav_section == "Graph Chart":
     else:
         st.write("No transactions to display in the graph.")
 
+elif nav_section == "Spending Analysis":
+    st.header("Spending Analysis")
+    st.write("Here, you can analyze your spending patterns.")
+
+    if st.session_state.wallet:
+        total_spent = sum([entry['amount'] for entry in st.session_state.wallet])
+        st.subheader(f"Total Spent: ₹ {total_spent:.2f}")
+    else:
+        st.write("No spending data available.")
+
+elif nav_section == "Encrypted Data":
+    st.header("Encrypted Transaction Data")
+    st.write("Here is the encrypted data for each transaction.")
+
+    if st.session_state.encrypted_transactions:
+        for user_id, encrypted_data in st.session_state.encrypted_transactions.items():
+            st.write(f"**User ID:** {user_id}, Encrypted Amount: {encrypted_data.ciphertext()}")
+    else:
+        st.write("No encrypted transactions yet.")
+
 elif nav_section == "Logout":
     st.header("Logout")
-    st.write("You have successfully logged out. To log in again, return to the Home section.")
-
-# Add a section to display encrypted transactions in the sidebar at the bottom
-st.sidebar.write("### Encrypted Transactions")
-if st.session_state.encrypted_transactions:
-    for user_id, encrypted_data in st.session_state.encrypted_transactions.items():
-        st.sidebar.write(f"User ID: {user_id}, Encrypted Amount: {encrypted_data.ciphertext()}")
-else:
-    st.sidebar.write("No encrypted transactions yet.")
-
-# Add a small text bar at the bottom of the page
-st.markdown("<div style='position: fixed; bottom: 0; width: 100%; text-align: center; background-color: #f0f0f0; padding: 5px;'>Encrypted Homomorphic Message: Securely Encrypted for Privacy</div>", unsafe_allow_html=True)
+    st
