@@ -224,7 +224,7 @@ elif nav_section == "Graph Chart":
     user_ids = [transaction['user_id'] for transaction in st.session_state.transaction_history]
     transaction_amounts = [float(transaction['transaction_amount']) for transaction in st.session_state.transaction_history]
     transaction_times = [time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())) for _ in st.session_state.transaction_history]
-
+#edited
     if user_ids:
         fig, ax = plt.subplots()
         ax.bar(transaction_times, transaction_amounts, color='skyblue')
