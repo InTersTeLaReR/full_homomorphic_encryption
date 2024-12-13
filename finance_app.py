@@ -66,6 +66,26 @@ def display_countdown():
     else:
         st.write("Passkey has been updated!")
 
+# Function to simulate network traffic monitoring for suspicious activity
+def check_network_traffic():
+    # Placeholder logic for suspicious activity
+    # This could be replaced with actual network monitoring logic
+    suspicious_activity = False  # Simulate no suspicious activity
+    return suspicious_activity
+
+# Display network traffic status
+suspicious_activity = check_network_traffic()
+if suspicious_activity:
+    st.markdown(
+        '<p style="color:red; text-align:center; font-size:20px; font-weight:bold;">⚠️ Suspicious network activity detected! ⚠️</p>',
+        unsafe_allow_html=True
+    )
+else:
+    st.markdown(
+        '<p style="color:green; text-align:center; font-size:20px; font-weight:bold;">✔️ No suspicious activity detected.</p>',
+        unsafe_allow_html=True
+    )
+
 # Navigation and Wallet Management
 st.title("PrivShare – Highlighting privacy-focused")
 st.write("Welcome to the platform where you can securely submit and manage your financial data.")
