@@ -3,9 +3,8 @@ from phe import paillier
 import time
 import matplotlib.pyplot as plt
 import numpy as np
-import psutil  # Import psutil for real-time network traffic monitoring
+import psutil 
 
-# Initialize session state variables
 if "public_key" not in st.session_state:
     public_key, private_key = paillier.generate_paillier_keypair()
     st.session_state.public_key = public_key
@@ -18,13 +17,13 @@ if "transaction_history" not in st.session_state:
     st.session_state.transaction_history = []
 
 if "wallet" not in st.session_state:
-    st.session_state.wallet = []  # Store deposits as a list of dictionaries
+    st.session_state.wallet = [] 
 
 if "last_passkey_change_time" not in st.session_state:
     st.session_state.last_passkey_change_time = time.time()
 
 if "encryption_method" not in st.session_state:
-    st.session_state.encryption_method = "HE"  # Default to Homomorphic Encryption (HE)
+    st.session_state.encryption_method = "HE"  
 
 if "user_authenticated" not in st.session_state:
     st.session_state.user_authenticated = False
@@ -35,30 +34,28 @@ if "user_id" not in st.session_state:
 if "pan_no" not in st.session_state:
     st.session_state.pan_no = ""
 
-# Encryption and decryption functions for HE (Paillier)
+
 def encrypt_data(data):
     if st.session_state.encryption_method == "HE":
         encrypted_data = st.session_state.public_key.encrypt(float(data))
     elif st.session_state.encryption_method == "FFHE":
-        # Use FHE encryption function (this is a placeholder)
-        encrypted_data = encrypt_data_fhe(data)  # Replace with actual FHE encryption function
+        
+        encrypted_data = encrypt_data_fhe(data)  
     return encrypted_data
 
 def decrypt_data(encrypted_data):
     if st.session_state.encryption_method == "HE":
         return st.session_state.private_key.decrypt(encrypted_data)
     elif st.session_state.encryption_method == "FFHE":
-        # Use FHE decryption function (this is a placeholder)
-        return decrypt_data_fhe(encrypted_data)  # Replace with actual FHE decryption function
+        
+        return decrypt_data_fhe(encrypted_data)  
 
-# Placeholder FHE encryption and decryption (replace with actual FHE library functions)
 def encrypt_data_fhe(data):
-    # FHE encryption logic should go here
-    return data  # Placeholder, replace with actual FHE encryption
+    return data  
 
 def decrypt_data_fhe(encrypted_data):
-    # FHE decryption logic should go here
-    return encrypted_data  # Placeholder, replace with actual FHE decryption
+
+    return encrypted_data  
 
 def get_current_passkey():
     elapsed_time = time.time() - st.session_state.last_passkey_change_time
@@ -76,19 +73,17 @@ def display_countdown():
     else:
         st.write("Passkey has been updated!")
 
-# Function to simulate network traffic monitoring for suspicious activity
-def check_network_traffic():
-    # Get network statistics using psutil
-    network_stats = psutil.net_io_counters()
-    bytes_sent = network_stats.bytes_sent / (1024 * 1024)  # Convert bytes to MB
-    bytes_recv = network_stats.bytes_recv / (1024 * 1024)  # Convert bytes to MB
 
-    total_network_traffic = bytes_sent + bytes_recv  # Total network traffic in MB
+def check_network_traffic():
+   
+    network_stats = psutil.net_io_counters()
+    bytes_sent = network_stats.bytes_sent / (1024 * 1024)  
+    bytes_recv = network_stats.bytes_recv / (1024 * 1024)  
+    total_network_traffic = bytes_sent + bytes_recv 
     return total_network_traffic
 
-# Display network traffic status
 network_traffic = check_network_traffic()
-suspicious_activity = False  # Placeholder logic for suspicious activity
+suspicious_activity = False  
 if suspicious_activity:
     st.markdown(
         '<p style="color:red; text-align:center; font-size:20px; font-weight:bold;">⚠️ Suspicious network activity detected! ⚠️</p>',
@@ -102,7 +97,7 @@ else:
 
 st.write(f"Total Network Traffic: {network_traffic:.2f} MB")
 
-# Navigation and Wallet Management
+
 st.title("PrivShare – Highlighting privacy-focused")
 st.write("Welcome to the platform where you can securely submit and manage your financial data.")
 
@@ -119,9 +114,9 @@ nav_buttons = {
     "Support": "Support",
     "Settings": "Settings",
     "Graph Chart": "Graph Chart",
-    "Spending Analysis": "Spending Analysis",  # Added Spending Analysis
-    "Encrypted Data": "Encrypted Data",  # Added Encrypted Data
-    "Wallet": "Wallet",  # Wallet added
+    "Spending Analysis": "Spending Analysis",  
+    "Encrypted Data": "Encrypted Data",  
+    "Wallet": "Wallet",  
     "Logout": "Logout",
 }
 
@@ -151,12 +146,12 @@ if nav_section == "Home":
         if section == "User Section":
             st.subheader("Submit Financial Data")
 
-            # Use session state variables to retain input field values
+           
             st.session_state.user_id = st.text_input("Enter User ID:", value=st.session_state.user_id)
             st.session_state.pan_no = st.text_input("Enter PAN Number:", value=st.session_state.pan_no)
             transaction_amount = st.text_input("Enter Transaction Amount (numeric):")
 
-            # If no amount is entered, set it to '0000'
+            
             if not transaction_amount:
                 transaction_amount = '0000'
 
@@ -246,7 +241,7 @@ elif nav_section == "Support":
     st.write("Phone: +1-234-567-890")
     st.write("Our team is available 24/7 to assist you.")
 
-    # Use a radio button to select an option
+   
     user_input = st.radio("Choose a topic:", ("Investment", "Deposition"))
 
     if user_input == "Investment":
@@ -263,7 +258,7 @@ elif nav_section == "Settings":
     st.header("Settings")
     st.write("Here, you can manage your account settings.")
 
-    # Toggle to switch between encryption methods
+  
     encryption_method = st.radio(
         "Select Encryption Method",
         options=["HE", "FFHE"],
@@ -298,7 +293,7 @@ elif nav_section == "Spending Analysis":
         total_spent = sum([entry['amount'] for entry in st.session_state.wallet])
         st.subheader(f"Total Spent: ₹ {total_spent:.2f}")
 
-        # Create an enhanced line graph for spending distribution
+        
         spending_distribution = [entry['amount'] for entry in st.session_state.wallet]
         spending_labels = [f"Transaction {i+1}" for i in range(len(spending_distribution))]
 
@@ -310,7 +305,7 @@ elif nav_section == "Spending Analysis":
         ax.grid(True)
         st.pyplot(fig)
 
-        # Display detailed transaction data in a table
+       
         st.write("### Detailed Spending Table")
         st.table(st.session_state.wallet)
 
@@ -331,7 +326,7 @@ elif nav_section == "Logout":
     st.header("Logout")
     st.write("You have successfully logged out.")
 
-    # Reset session state variables related to user authentication
+    
     st.session_state.user_authenticated = False
     st.session_state.user_id = ""
     st.session_state.pan_no = ""
