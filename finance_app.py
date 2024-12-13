@@ -259,3 +259,17 @@ elif nav_section == "Encrypted Data":
 elif nav_section == "Logout":
     st.header("Logout")
     st.write("You have successfully logged out.")
+
+# Timer Logic
+if "logout_time" not in st.session_state:
+    st.session_state.logout_time = time.time() + 300  # Set 5 minutes timer (300 seconds)
+
+# Calculate remaining time
+elapsed_time = time.time() - st.session_state.logout_time + 300
+remaining_time = max(0, int(elapsed_time))
+
+# Display countdown
+st.write(f"Time until automatic logout: {remaining_time} seconds")
+
+if remaining_time == 0:
+    st.session_state.nav_section = "Logout"  # Automatically log out when the timer ends
