@@ -29,6 +29,12 @@ if "encryption_method" not in st.session_state:
 if "user_authenticated" not in st.session_state:
     st.session_state.user_authenticated = False
 
+if "user_id" not in st.session_state:
+    st.session_state.user_id = ""
+
+if "pan_no" not in st.session_state:
+    st.session_state.pan_no = ""
+
 # Encryption and decryption functions for HE (Paillier)
 def encrypt_data(data):
     if st.session_state.encryption_method == "HE":
@@ -145,8 +151,9 @@ if nav_section == "Home":
         if section == "User Section":
             st.subheader("Submit Financial Data")
 
-            user_id = st.text_input("Enter User ID:")
-            pan_no = st.text_input("Enter PAN Number:")
+            # Use session state variables to retain input field values
+            st.session_state.user_id = st.text_input("Enter User ID:", value=st.session_state.user_id)
+            st.session_state.pan_no = st.text_input("Enter PAN Number:", value=st.session_state.pan_no)
             transaction_amount = st.text_input("Enter Transaction Amount (numeric):")
 
             current_passkey = get_current_passkey()
@@ -154,13 +161,13 @@ if nav_section == "Home":
             passkey = st.text_input("Enter Passkey:", type="password")
 
             if st.button("Encrypt and Submit"):
-                if user_id and pan_no and transaction_amount.replace('.', '', 1).isdigit() and passkey == current_passkey:
+                if st.session_state.user_id and st.session_state.pan_no and transaction_amount.replace('.', '', 1).isdigit() and passkey == current_passkey:
                     encrypted_data = encrypt_data(transaction_amount)
-                    st.session_state.encrypted_transactions[user_id] = encrypted_data
+                    st.session_state.encrypted_transactions[st.session_state.user_id] = encrypted_data
 
                     st.session_state.transaction_history.append({
-                        "user_id": user_id,
-                        "pan_no": pan_no,
+                        "user_id": st.session_state.user_id,
+                        "pan_no": st.session_state.pan_no,
                         "transaction_amount": transaction_amount,
                         "status": "Encrypted and stored securely"
                     })
@@ -309,8 +316,15 @@ elif nav_section == "Logout":
     st.write("You have successfully logged out.")
 
 # Timer Logic
-if "logout_time" not in st.session_state:
-    st.session_state.logout_time = time.time() + 300  # Set 5 minutes timer (300 seconds)
+if nav_section == "Logout":
+    st.header("Logout")
+    st.write("You have successfully logged out.")
 
-# Calculate remaining time
-elapsed_time = time.time() - st.session_state.logout_time + 300
+    # Reset session state variables related to user authentication
+    st.session_state.user_authenticated = False
+    st.session_state.user_id = ""
+    st.session_state.pan_no = ""
+    st.session_state.encrypted_transactions = {}
+    st.session_state.transaction_history = []
+    st.session_state.wallet = []
+
