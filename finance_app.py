@@ -4,24 +4,20 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Paillier Key Generation
 if "public_key" not in st.session_state:
     public_key, private_key = paillier.generate_paillier_keypair()
     st.session_state.public_key = public_key
     st.session_state.private_key = private_key
 
-# Initialize encrypted transactions and history
 if "encrypted_transactions" not in st.session_state:
     st.session_state.encrypted_transactions = {}
 
 if "transaction_history" not in st.session_state:
     st.session_state.transaction_history = []
 
-# Store the time when the passkey was last changed
 if "last_passkey_change_time" not in st.session_state:
     st.session_state.last_passkey_change_time = time.time()
 
-# Encryption and Decryption Functions
 def encrypt_data(data):
     encrypted_data = st.session_state.public_key.encrypt(float(data))
     return encrypted_data
@@ -29,7 +25,6 @@ def encrypt_data(data):
 def decrypt_data(encrypted_data):
     return st.session_state.private_key.decrypt(encrypted_data)
 
-# Function to get the current passkey
 def get_current_passkey():
     elapsed_time = time.time() - st.session_state.last_passkey_change_time
     if elapsed_time > 300:  
@@ -38,7 +33,6 @@ def get_current_passkey():
     else:
         return "sit1234" if (int(elapsed_time / 300) % 2 == 0) else "sit4321"
 
-# Function to display countdown for passkey change
 def display_countdown():
     elapsed_time = time.time() - st.session_state.last_passkey_change_time
     remaining_time = 300 - elapsed_time  
@@ -47,11 +41,9 @@ def display_countdown():
     else:
         st.write("Passkey has been updated!")
 
-# Streamlit UI
-st.title("Secure Financial Data Platform")
+st.title("PrivShare – Highlighting privacy-focused")
 st.write("Welcome to the platform where you can securely submit and manage your financial data.")
 
-# Navigation Section
 if "nav_section" not in st.session_state:
     st.session_state.nav_section = "Home"
 
@@ -65,7 +57,7 @@ nav_buttons = {
     "Support": "Support",
     "Bank & Mandates": "Bank & Mandates",
     "Settings": "Settings",
-    "Graph Chart": "Graph Chart",  # Added Graph Chart option
+    "Graph Chart": "Graph Chart",
     "Logout": "Logout",
 }
 
@@ -156,6 +148,32 @@ elif nav_section == "Support":
     st.write("Phone: +1-234-567-890")
     st.write("Our team is available 24/7 to assist you.")
 
+    st.subheader("Chat with Us")
+    # Chatbot logic
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+
+    def get_bot_reply(user_input):
+        replies = {
+            "hi": "Hello! How can I assist you today?",
+            "help": "Please describe the issue you're facing, and I'll do my best to help.",
+            "transaction": "You can submit your financial data in the User Section under the 'Submit Financial Data' tab.",
+            "encryption": "Encryption ensures that your data is securely stored and transmitted, preventing unauthorized access.",
+            "admin": "To access the Admin Panel, enter the admin access code in the Admin Section."
+        }
+        return replies.get(user_input.lower(), "Sorry, I didn't understand that. Please try again.")
+
+    # User input for chat
+    user_input = st.text_input("Your Message:", "")
+    if user_input:
+        st.session_state.messages.append(f"You: {user_input}")
+        bot_reply = get_bot_reply(user_input)
+        st.session_state.messages.append(f"Bot: {bot_reply}")
+
+    # Display conversation
+    for message in st.session_state.messages:
+        st.write(message)
+
 elif nav_section == "Bank & Mandates":
     st.header("Bank & Mandates")
     st.write("This section provides access to bank mandates and transactions related to financial institutions.")
@@ -170,17 +188,16 @@ elif nav_section == "Graph Chart":
     st.header("Transaction Chart")
     st.write("Here is a graphical representation of transaction amounts over time.")
 
-    # Prepare data for graph
     user_ids = [transaction['user_id'] for transaction in st.session_state.transaction_history]
     transaction_amounts = [float(transaction['transaction_amount']) for transaction in st.session_state.transaction_history]
+    transaction_times = [time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())) for _ in st.session_state.transaction_history]
 
-    # Display a bar chart
     if user_ids:
         fig, ax = plt.subplots()
-        ax.bar(user_ids, transaction_amounts, color='skyblue')
-        ax.set_xlabel('User ID')
+        ax.bar(transaction_times, transaction_amounts, color='skyblue')
+        ax.set_xlabel('Date and Time')
         ax.set_ylabel('Transaction Amount')
-        ax.set_title('Transaction Amounts by User')
+        ax.set_title('Transaction Amounts Over Time')
         st.pyplot(fig)
     else:
         st.write("No transactions to display in the graph.")
