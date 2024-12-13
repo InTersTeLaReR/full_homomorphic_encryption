@@ -3,6 +3,7 @@ from phe import paillier
 import time
 import matplotlib.pyplot as plt
 import numpy as np
+import psutil  # Import psutil for real-time network traffic monitoring
 
 # Initialize session state variables
 if "public_key" not in st.session_state:
@@ -68,13 +69,17 @@ def display_countdown():
 
 # Function to simulate network traffic monitoring for suspicious activity
 def check_network_traffic():
-    # Placeholder logic for suspicious activity
-    # This could be replaced with actual network monitoring logic
-    suspicious_activity = False  # Simulate no suspicious activity
-    return suspicious_activity
+    # Get network statistics using psutil
+    network_stats = psutil.net_io_counters()
+    bytes_sent = network_stats.bytes_sent / (1024 * 1024)  # Convert bytes to MB
+    bytes_recv = network_stats.bytes_recv / (1024 * 1024)  # Convert bytes to MB
+
+    total_network_traffic = bytes_sent + bytes_recv  # Total network traffic in MB
+    return total_network_traffic
 
 # Display network traffic status
-suspicious_activity = check_network_traffic()
+network_traffic = check_network_traffic()
+suspicious_activity = False  # Placeholder logic for suspicious activity
 if suspicious_activity:
     st.markdown(
         '<p style="color:red; text-align:center; font-size:20px; font-weight:bold;">⚠️ Suspicious network activity detected! ⚠️</p>',
@@ -85,6 +90,8 @@ else:
         '<p style="color:green; text-align:center; font-size:20px; font-weight:bold;">✔️ No suspicious activity detected.</p>',
         unsafe_allow_html=True
     )
+
+st.write(f"Total Network Traffic: {network_traffic:.2f} MB")
 
 # Navigation and Wallet Management
 st.title("PrivShare – Highlighting privacy-focused")
