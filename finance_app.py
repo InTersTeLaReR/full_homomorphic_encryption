@@ -1,7 +1,6 @@
 import streamlit as st
 from phe import paillier
 
-# Generate public and private keys (only once per session)
 if "public_key" not in st.session_state:
     public_key, private_key = paillier.generate_paillier_keypair()
     st.session_state.public_key = public_key
@@ -16,11 +15,9 @@ def encrypt_data(data):
     encrypted_data = st.session_state.public_key.encrypt(float(data))
     return encrypted_data
 
-# Function to decrypt data
 def decrypt_data(encrypted_data):
     return st.session_state.private_key.decrypt(encrypted_data)
 
-# Sidebar Navigation
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to:", ["User Section", "Admin Section"])
 
@@ -35,7 +32,7 @@ if page == "User Section":
 
     if st.button("Encrypt and Submit"):
         if user_id and transaction_amount.replace('.', '', 1).isdigit():
-            # Encrypt and store data in session state
+
             encrypted_data = encrypt_data(transaction_amount)
             st.session_state.encrypted_transactions[user_id] = encrypted_data
             st.success("Transaction encrypted and stored securely!")
