@@ -1,6 +1,8 @@
 import streamlit as st
 from phe import paillier
 import time
+import matplotlib.pyplot as plt
+import numpy as np
 
 # Paillier Key Generation
 if "public_key" not in st.session_state:
@@ -63,6 +65,7 @@ nav_buttons = {
     "Support": "Support",
     "Bank & Mandates": "Bank & Mandates",
     "Settings": "Settings",
+    "Graph Chart": "Graph Chart",  # Added Graph Chart option
     "Logout": "Logout",
 }
 
@@ -135,7 +138,7 @@ if nav_section == "Home":
 
 elif nav_section == "FAQ's":
     st.header("Frequently Asked Questions")
-    st.write("""
+    st.write(""" 
     1. **How do I submit my financial data?**
        - You can securely submit your financial data through the "User Section" of the platform.
     2. **What is encryption?**
@@ -162,6 +165,25 @@ elif nav_section == "Settings":
     st.header("Settings")
     st.write("Here, you can manage your account settings.")
     st.write("Options include changing your password, updating your profile, and configuring notification preferences.")
+
+elif nav_section == "Graph Chart":
+    st.header("Transaction Chart")
+    st.write("Here is a graphical representation of transaction amounts over time.")
+
+    # Prepare data for graph
+    user_ids = [transaction['user_id'] for transaction in st.session_state.transaction_history]
+    transaction_amounts = [float(transaction['transaction_amount']) for transaction in st.session_state.transaction_history]
+
+    # Display a bar chart
+    if user_ids:
+        fig, ax = plt.subplots()
+        ax.bar(user_ids, transaction_amounts, color='skyblue')
+        ax.set_xlabel('User ID')
+        ax.set_ylabel('Transaction Amount')
+        ax.set_title('Transaction Amounts by User')
+        st.pyplot(fig)
+    else:
+        st.write("No transactions to display in the graph.")
 
 elif nav_section == "Logout":
     st.header("Logout")
