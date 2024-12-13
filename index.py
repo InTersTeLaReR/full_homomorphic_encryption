@@ -1,3 +1,4 @@
+#for sit by team codesmith...Had a wonderful experience
 import random
 import smtplib
 from email.message import EmailMessage
