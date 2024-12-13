@@ -156,6 +156,10 @@ if nav_section == "Home":
             st.session_state.pan_no = st.text_input("Enter PAN Number:", value=st.session_state.pan_no)
             transaction_amount = st.text_input("Enter Transaction Amount (numeric):")
 
+            # If no amount is entered, set it to '0000'
+            if not transaction_amount:
+                transaction_amount = '0000'
+
             current_passkey = get_current_passkey()
             display_countdown()
             passkey = st.text_input("Enter Passkey:", type="password")
@@ -235,7 +239,7 @@ elif nav_section == "FAQ's":
     4. **How is my data protected?**
        - Your data is encrypted using Paillier homomorphic encryption, ensuring its confidentiality and security.
     """)
-
+    
 elif nav_section == "Support":
     st.header("Support")
     st.write("For assistance with the platform, please contact us at the following:")
@@ -315,11 +319,6 @@ elif nav_section == "Logout":
     st.header("Logout")
     st.write("You have successfully logged out.")
 
-# Timer Logic
-if nav_section == "Logout":
-    st.header("Logout")
-    st.write("You have successfully logged out.")
-
     # Reset session state variables related to user authentication
     st.session_state.user_authenticated = False
     st.session_state.user_id = ""
@@ -327,4 +326,3 @@ if nav_section == "Logout":
     st.session_state.encrypted_transactions = {}
     st.session_state.transaction_history = []
     st.session_state.wallet = []
-
