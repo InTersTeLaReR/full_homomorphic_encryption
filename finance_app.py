@@ -275,16 +275,16 @@ elif nav_section == "Spending Analysis":
         total_spent = sum([entry['amount'] for entry in st.session_state.wallet])
         st.subheader(f"Total Spent: ₹ {total_spent:.2f}")
 
-        # Create a line graph for spending distribution
+        # Create an enhanced line graph for spending distribution
         spending_distribution = [entry['amount'] for entry in st.session_state.wallet]
         spending_labels = [f"Transaction {i+1}" for i in range(len(spending_distribution))]
 
-        # Line graph representation
         fig, ax = plt.subplots()
         ax.plot(spending_labels, spending_distribution, marker='o', color='orange', linestyle='-', linewidth=2)
         ax.set_xlabel('Transaction')
         ax.set_ylabel('Amount (₹)')
         ax.set_title('Spending Distribution Over Time')
+        ax.grid(True)
         st.pyplot(fig)
 
         # Display detailed transaction data in a table
