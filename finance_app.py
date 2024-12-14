@@ -275,7 +275,7 @@ elif nav_section == "Withdraw":
                     "amount": -withdraw_amount,
                     "timestamp": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
                 })
-                st.success(f"Successfully withdrew ₹ {withdraw_amount:.2f}. Remaining Balance: ₹ {total_balance - withdraw_amount:.2f}")
+                st.success(f"The amount will be delivered within 24 hours, Withdraw request added ₹ {withdraw_amount:.2f}. Remaining Balance: ₹ {total_balance - withdraw_amount:.2f}")
             else:
                 st.error("Insufficient balance!")
     else:
