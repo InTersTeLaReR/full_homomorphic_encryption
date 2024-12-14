@@ -123,7 +123,8 @@ nav_buttons = {
     "Spending Analysis": "Spending Analysis",
     "Encrypted Data": "Encrypted Data",
     "Wallet": "Wallet",
-    "Credential Encryption": "Credential Encryption",  # Added new nav item
+    "Credential Encryption": "Credential Encryption", 
+     "Withdraw": "Withdraw", 
     "Logout": "Logout",
 }
 
@@ -257,6 +258,29 @@ elif nav_section == "Support":
         st.write("""
         **Deposition** refers to the act of placing or depositing money into a secure account, such as a bank account or savings account. It allows individuals to safeguard their funds and earn interest over time. Depositing money is a safe way to preserve capital while earning a small return through interest. Deposits are generally low-risk investments, offering liquidity and security for the depositor's funds.
         """)
+
+elif nav_section == "Withdraw":
+    st.header("Withdraw Funds")
+    st.write("Here, you can withdraw funds from your wallet.")
+
+    if st.session_state.wallet:
+        total_balance = sum([entry['amount'] for entry in st.session_state.wallet])
+        st.subheader(f"Available Balance: ₹ {total_balance:.2f}")
+
+        withdraw_amount = st.number_input("Enter Amount to Withdraw:", min_value=0.0, max_value=total_balance, step=0.01)
+
+        if st.button("Confirm Withdrawal"):
+            if withdraw_amount <= total_balance:
+                st.session_state.wallet.append({
+                    "amount": -withdraw_amount,
+                    "timestamp": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+                })
+                st.success(f"Successfully withdrew ₹ {withdraw_amount:.2f}. Remaining Balance: ₹ {total_balance - withdraw_amount:.2f}")
+            else:
+                st.error("Insufficient balance!")
+    else:
+        st.write("No funds available in your wallet.")
+
 
 elif nav_section == "Settings":
     st.header("Settings")
