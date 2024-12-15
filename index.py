@@ -13,7 +13,7 @@ for i in range(6):
 from_mail = 'furydark13@gmail.com' 
 password = 'cnew coxg jtzx setl' 
 
-try:
+try:#forsmtp
 
     server = smtplib.SMTP('smtp.gmail.com', 587) 
     server.starttls() 
