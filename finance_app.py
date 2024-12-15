@@ -187,7 +187,7 @@ if nav_section == "Home":
                     st.error("Invalid passkey! Please try again.")
                 else:
                     st.error("Please enter valid transaction data.")
-
+#HE updated
             st.subheader("Transaction History")
             if st.session_state.transaction_history:
                 for idx, transaction in enumerate(st.session_state.transaction_history, 1):
