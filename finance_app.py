@@ -1,4 +1,3 @@
-#for sit hackathon by team codesmith...Had a wonderfull experience
 import streamlit as st
 from phe import paillier
 import time
@@ -372,4 +371,5 @@ elif nav_section == "Logout":
     st.session_state.encrypted_transactions = {}
     st.session_state.transaction_history = []
     st.session_state.wallet = []
+
 
